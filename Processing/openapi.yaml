@@ -1,0 +1,59 @@
+openapi: 3.0.0
+
+info:
+  description: This API provies event status
+  version: "1.0.0"
+  title: Stats API
+  contact:
+    email: erjin1994@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+paths:
+ /stats:
+   get:
+    summary: Gets the event stats
+    operationId: app.get_stats
+    description: Gets Order Request and Delivery Request processsed statistics
+    responses:
+      '200':
+        description: Successfully returned a list of order and delivery request events
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: '#/components/schemas/RequestStats'
+      '400':
+        description: Invalid request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+
+components:
+  schemas:
+    RequestStats:
+      required:
+      - order_req_received_since_last_update
+      - total_order_req_today
+      - delivery_req_received_since_last_update
+      - total_delivery_req_today
+      properties:
+         order_req_received_since_last_update:
+           type: integer
+           example: 50000
+         total_order_req_today:
+           type: integer
+           example: 200000
+         delivery_req_received_since_last_update:
+           type: integer
+           example: 50000
+         total_delivery_req_today:
+           type: integer
+           example: 200000
+      type: object

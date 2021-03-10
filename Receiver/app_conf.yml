@@ -1,0 +1,9 @@
+version: 1
+#orderRequest:
+# url: http://localhost:8090/order-delivery/order
+#deliveryRequest:
+# url: http://localhost:8090/order-delivery/delivery
+events:
+ hostname: acit3855-erjin.eastus2.cloudapp.azure.com
+ port: 9092
+ topic: events

@@ -1,0 +1,11 @@
+version: 1
+datastore:
+ user: root
+ password: P@ssw0rd
+ hostname: acit3855-erjin.eastus2.cloudapp.azure.com
+ port: 3306
+ db: events
+events:
+ hostname: acit3855-erjin.eastus2.cloudapp.azure.com
+ port: 9092
+ topic: events

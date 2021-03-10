@@ -1,0 +1,200 @@
+openapi: 3.0.0
+
+info:
+  description: This API receives order and delivery events from devices 
+  version: "1.0.0"
+  title: Order and Delivery API
+  contact:
+    email: erjin1994@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: devices
+    description: Operations available to devices
+paths:
+  /order-delivery/order:
+    post:
+      tags:
+        - devices
+      summary: report an order request
+      operationId: app.report_order
+      description: |
+        Adds a new customer order to the system
+      responses:
+        '201':
+          description: order created
+        '400':
+          description: bad input parameter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        description: Inventory item to add
+    get:
+      tags:
+        - devices
+      summary: get new order request
+      operationId: app.get_order
+      description: Gets order request added after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+      responses:
+        '200':
+          description: Successfully returned a list of order request events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderRequest'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /order-delivery/delivery:
+    post:
+      tags:
+        - devices
+      summary: report a delivery request
+      operationId: app.report_delivery
+      description: 
+        Adds a new customer delivery request to the system
+      responses:
+        '201':
+          description: delivery request created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryRequest'
+        description: Inventory item to add
+    get:
+      tags:
+        - devices
+      summary: get new delivery request
+      operationId: app.get_delivery
+      description: Gets delivery request added after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+      responses:
+        '200':
+          description: Successfully returned a list of delivery request events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeliveryRequest'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+components:
+  schemas:
+    OrderRequest:
+      required:
+        - order_id
+        - device_id
+        - store_id
+        - customer_name
+        - order_detail
+        - timestamp
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: O123456
+        device_id:
+          type: string
+          format: uuid
+          example: A123456
+        store_id:
+          type: string
+          format: uuid
+          example: B123456
+        customer_name:
+          type: string
+          example: Widget Adapter
+        order_detail:
+          $ref: '#/components/schemas/OrderDetail'
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+      type: object
+      
+    DeliveryRequest:
+      required:
+        - order_id
+        - device_id
+        - store_id
+        - driver_id
+        - customer_name
+        - order_detail
+        - timestamp
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: O123456
+        device_id:
+          type: string
+          format: uuid
+          example: B123456
+        store_id:
+          type: string
+          format: uuid
+          example: D123456
+        driver_id:
+          type: integer
+          format: uuid
+          example: 123456
+        customer_name:
+          type: string
+          example: Widget Adapter
+        order_detail:
+          $ref: '#/components/schemas/OrderDetail'
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+      type: object
+    
+    OrderDetail:
+      required:
+      - item
+      - quantity
+      properties:
+        item: 
+          type: string
+          example: burger
+        quantity:
+          type: integer
+          example: 2
+      type: object

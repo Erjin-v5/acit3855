@@ -1,0 +1,174 @@
+openapi: 3.0.0
+
+info:
+  description: This API provies audit info
+  version: "1.0.0"
+  title: Audit API
+  contact:
+    email: erjin1994@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+paths:
+ /order_request:
+   get:
+    summary: Gets a order request reading from history
+    operationId: app.get_order_request_reading
+    description: Gets order request readings from the event store
+    parameters:
+      - name: index
+        in: query
+        description: Gets the OR at the index in the event store
+        schema:
+          type: integer
+          example: 10
+    responses:
+      '200':
+        description: Successfully returned a order request events
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: '#/components/schemas/OrderRequest'
+      '400':
+        description: Invalid request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '404':
+        description: Not Found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+ /delivery_request:
+   get:
+    summary: Gets a delivery request reading from history
+    operationId: app.get_delivery_request_reading
+    description: Gets delivery request readings from the event store
+    parameters:
+      - name: index
+        in: query
+        description: Gets the DR at the index in the event store
+        schema:
+          type: integer
+          example: 10
+    responses:
+      '200':
+        description: Successfully returned a delivery request events
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: '#/components/schemas/DeliveryRequest'
+      '400':
+        description: Invalid request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '404':
+        description: Not Found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+components:
+  schemas:
+    OrderRequest:
+      required:
+        - order_id
+        - device_id
+        - store_id
+        - customer_name
+        - order_detail
+        - timestamp
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: O123456
+        device_id:
+          type: string
+          format: uuid
+          example: A123456
+        store_id:
+          type: string
+          format: uuid
+          example: B123456
+        customer_name:
+          type: string
+          example: Widget Adapter
+        order_detail:
+          $ref: '#/components/schemas/OrderDetail'
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+      type: object
+
+    DeliveryRequest:
+      required:
+        - order_id
+        - device_id
+        - store_id
+        - driver_id
+        - customer_name
+        - order_detail
+        - timestamp
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: O123456
+        device_id:
+          type: string
+          format: uuid
+          example: B123456
+        store_id:
+          type: string
+          format: uuid
+          example: D123456
+        driver_id:
+          type: integer
+          format: uuid
+          example: 123456
+        customer_name:
+          type: string
+          example: Widget Adapter
+        order_detail:
+          $ref: '#/components/schemas/OrderDetail'
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+      type: object
+
+    OrderDetail:
+      required:
+      - item
+      - quantity
+      properties:
+        item:
+          type: string
+          example: burger
+        quantity:
+          type: integer
+          example: 2
+      type: object

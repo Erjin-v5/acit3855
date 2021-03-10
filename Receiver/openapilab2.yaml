@@ -1,0 +1,139 @@
+openapi: 3.0.0
+#servers:
+#  # Added by API Auto Mocking Plugin
+#  - description: SwaggerHub API Auto Mocking
+#    url: https://virtserver.swaggerhub.com/erjin1994/orderAndDelivery/1.0.0
+info:
+  description: This API receives order and delivery events from devices 
+  version: "1.0.0"
+  title: Order and Delivery API
+  contact:
+    email: erjin1994@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: devices
+    description: Operations available to devices
+paths:
+  /order-delivery/order:
+    post:
+      tags:
+        - devices
+      summary: report an order request
+      operationId: app.report_order
+      description: |
+        Adds a new customer order to the system
+      responses:
+        '201':
+          description: order created
+        '400':
+          description: bad input parameter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        description: Inventory item to add
+  /order-delivery/delivery:
+    post:
+      tags:
+        - devices
+      summary: report a delivery request
+      operationId: app.report_delivery
+      description: 
+        Adds a new customer delivery request to the system
+      responses:
+        '201':
+          description: delivery request created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryRequest'
+        description: Inventory item to add
+components:
+  schemas:
+    OrderRequest:
+      required:
+        - order_id
+        - device_id
+        - store_id
+        - customer_name
+        - order_detail
+        - timestamp
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: O123456
+        device_id:
+          type: string
+          format: uuid
+          example: A123456
+        store_id:
+          type: string
+          format: uuid
+          example: B123456
+        customer_name:
+          type: string
+          example: Widget Adapter
+        order_detail:
+          $ref: '#/components/schemas/OrderDetail'
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+      type: object
+      
+    DeliveryRequest:
+      required:
+        - order_id
+        - device_id
+        - store_id
+        - driver_id
+        - customer_name
+        - order_detail
+        - timestamp
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: O123456
+        device_id:
+          type: string
+          format: uuid
+          example: A123456
+        store_id:
+          type: string
+          format: uuid
+          example: B123456
+        driver_id:
+          type: string
+          format: uuid
+          example: D123456
+        customer_name:
+          type: string
+          example: Widget Adapter
+        order_detail:
+          $ref: '#/components/schemas/OrderDetail'
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+      type: object
+    
+    OrderDetail:
+      required:
+      - item
+      - quantity
+      properties:
+        item: 
+          type: string
+          example: burger
+        quantity:
+          type: integer
+          example: 2
+      type: object
