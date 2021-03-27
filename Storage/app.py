@@ -129,7 +129,6 @@ def process_messages():
 
             logger.debug(f"Stored event Order Request request with a unique id of {payload['customer_name']}")
 
-            return NoContent, 201
         elif msg["type"] == "dr":  # Change this to your event type
             logger.debug("Get Delivery Request")
 
@@ -153,7 +152,6 @@ def process_messages():
 
             logger.debug(f"Stored event Delivery Request request with a unique id of {payload['driver_id']}")
 
-            return NoContent, 201
         # Commit the new message as being read
         consumer.commit_offsets()
 
