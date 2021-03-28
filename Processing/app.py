@@ -9,8 +9,8 @@ import requests
 
 from connexion import NoContent
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import sessionmaker
 # from base import Base
 # from order_request import OrderRequest
 # from delivery_request import DeliveryRequest
